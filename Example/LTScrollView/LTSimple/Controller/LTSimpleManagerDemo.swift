@@ -13,6 +13,7 @@
 //
 //  clone地址:  https://github.com/gltwy/LTScrollView.git
 //
+private let glt_iphoneX = (UIScreen.main.bounds.height >= 812.0)
 
 import UIKit
 import MJRefresh
@@ -20,7 +21,7 @@ import MJRefresh
 class LTSimpleManagerDemo: UIViewController {
     
     private lazy var titles: [String] = {
-        return ["热门", "精彩推荐", "科技控", "游戏"]
+        return ["此处标题View支持", "自定义", "查看", "LTPageView具体使用"]
     }()
     
     private lazy var viewControllers: [UIViewController] = {
@@ -33,35 +34,38 @@ class LTSimpleManagerDemo: UIViewController {
     
     private lazy var layout: LTLayout = {
         let layout = LTLayout()
-        layout.bottomLineHeight = 4.0
-        layout.bottomLineCornerRadius = 2.0
-        /* 更多属性设置请参考 LTLayout 中 public 属性说明 */
+        layout.bottomLineHeight = 2.0
+        layout.titleFont = UIFont.systemFont(ofSize: 13)
+        layout.bottomLineCornerRadius = 1.0
+        /* 更多属性设置请参考 LTLayout 中 public 属性说明 , 自定义样式请参考LTPageView */
         return layout
     }()
     
-    private lazy var simpleManager: LTSimpleManager = {
-        
+    private func managerReact() -> CGRect {
         let statusBarH = UIApplication.shared.statusBarFrame.size.height
         let Y: CGFloat = statusBarH + 44
         let H: CGFloat = glt_iphoneX ? (view.bounds.height - Y - 34) : view.bounds.height - Y
-        
-        let simpleManager = LTSimpleManager(frame: CGRect(x: 0, y: Y, width: view.bounds.width, height: H), viewControllers: viewControllers, titles: titles, currentViewController: self, layout: layout)
-        
+        return CGRect(x: 0, y: Y, width: view.bounds.width, height: H)
+    }
+    
+    /*
+    // 取消注释此处为自定义titleView
+     private lazy var simpleManager: LTSimpleManager = {
+     let customTitleView = LTCustomTitleView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 44), titles: titles, layout: layout)
+     customTitleView.isCustomTitleView = true
+     let simpleManager = LTSimpleManager(frame: managerReact(), viewControllers: viewControllers, titles: titles, currentViewController: self, layout: layout, titleView: customTitleView)
+     /* 设置代理 监听滚动 */
+     simpleManager.delegate = self
+     return simpleManager
+     }()
+    */
+ 
+    
+
+    private lazy var simpleManager: LTSimpleManager = {
+        let simpleManager = LTSimpleManager(frame: managerReact(), viewControllers: viewControllers, titles: titles, currentViewController: self, layout: layout)
         /* 设置代理 监听滚动 */
         simpleManager.delegate = self
-        
-        /* 设置悬停位置 */
-        //        simpleManager.hoverY = 64
-        
-        /* 点击切换滚动过程动画 */
-        //        simpleManager.isClickScrollAnimation = true
-        
-        /* 代码设置滚动到第几个位置 */
-        //        simpleManager.scrollToIndex(index: 1)
-        
-        /* 动态改变header的高度 */
-        //        simpleManager.glt_headerHeight = 180
-        
         return simpleManager
     }()
     
@@ -140,3 +144,4 @@ extension LTSimpleManagerDemo {
         return headerView
     }
 }
+

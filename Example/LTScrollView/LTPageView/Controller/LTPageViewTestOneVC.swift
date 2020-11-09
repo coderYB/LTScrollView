@@ -19,9 +19,8 @@ import MJRefresh
 
 class LTPageViewTestOneVC: UIViewController, LTTableViewProtocal {
     
-    private lazy var tableView: UITableView = {
-        let H: CGFloat = glt_iphoneX ? (view.bounds.height - 64 - 24 - 34) : view.bounds.height  - 64
-        let tableView = tableViewConfig(CGRect(x: 0, y: 0, width: view.bounds.width, height: H), self, self, nil)
+    private lazy var tableView: UITableView = {//80为两个titleview的高
+        let tableView = tableViewConfig(CGRect(x: 0, y: 0, width: GLT_MAINWIDTH, height: GLT_MAINWHEIGHT - 80 - GLT_NAVCHEIGHT - GLT_BOTTOMSPACE), self, self, nil)
         return tableView
     }()
     
@@ -36,6 +35,10 @@ class LTPageViewTestOneVC: UIViewController, LTTableViewProtocal {
         } else {
             automaticallyAdjustsScrollViewInsets = false
         }
+    }
+    
+    deinit {
+        print("LTPageViewTestOneVC释放了")
     }
 }
 
